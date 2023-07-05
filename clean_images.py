@@ -23,6 +23,7 @@ def clean_image_data(filepath):
     final_size = 512
     for item in image_dir:
         im = Image.open(f'{filepath}/{item}')
+        im = im.convert('RGB')
         new_im = resize_image(final_size, im)
         new_im.save(f'{filepath}/cleaned_images/{item}','JPEG')
 
