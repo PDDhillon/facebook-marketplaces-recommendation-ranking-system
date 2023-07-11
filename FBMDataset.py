@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from torch.utils.data import Dataset
 from torchvision.io import read_image
+from PIL import Image
 
 class FBMDataset(Dataset):
     def __init__(self, training_data_filepath, img_dir, transform=None ):
@@ -15,13 +16,13 @@ class FBMDataset(Dataset):
 
     def __getitem__(self, index):
         img_path = os.path.join(self.img_dir, self.img_labels.loc[index, 'id'] + '.jpg')
-        image = read_image(img_path)
-        label = self.img_labels.iloc[index, 2]      
+        label = self.img_labels.iloc[index, 2]  
+        image = Image.open(img_path)    
         if self.transform:
             image = self.transform(image)
 
-        return image.float(),label
+        return image,label
     
-dataset = FBMDataset("training_data.csv","../images_fb/images/cleaned_images")
-print(dataset.__getitem__(0)[0].shape)
-print(dataset.__getitem__(0)[1])
+# dataset = FBMDataset("training_data.csv","../images_fb/images/cleaned_images")
+# print(dataset.__getitem__(0)[0].shape)
+# print(dataset.__getitem__(0)[1])
