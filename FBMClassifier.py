@@ -9,8 +9,7 @@ class FBMClassifier(torch.nn.Module):
             param.requires_grad = False
         # change final layer of resnet-50 to have an output size = number of possible categories (13 categories)
         self.resnet50.fc = torch.nn.Sequential(torch.nn.Linear(2048,100),torch.nn.ReLU(),torch.nn.Linear(100,13))
+        #self.resnet50.fc = torch.nn.Sequential(torch.nn.Linear(2048,1000))
 
     def forward(self, X):
         return self.resnet50(X)
-    
-test = FBMClassifier()

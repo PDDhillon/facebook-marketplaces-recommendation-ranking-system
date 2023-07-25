@@ -15,3 +15,6 @@ Secondly, the required labels were extracted for classification. Two dictionarie
 The category column stored multiple categories in a string, all seperated by a "/". In order to extract our labels, the first category of the string was taken as the label. This data was then merged with the Images.csv, in order to determine the correct category for each image, and then stored in "training_data.csv".
 
 Finally, the images provided were passed through the function "clean_image_data" inside of "clean_images.py". Here images were resized and forced to an RGB format and saved into a "cleaned_images" directory. This formatting was done in order to have consistent data for our model to use.
+
+# Create the vision model, then turn it into a feature extraction model
+TBC
