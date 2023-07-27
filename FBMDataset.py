@@ -1,7 +1,6 @@
 import pandas as pd
 import os
 from torch.utils.data import Dataset
-from torchvision.io import read_image
 from PIL import Image
 
 class FBMDataset(Dataset):
@@ -24,8 +23,3 @@ class FBMDataset(Dataset):
             image = self.transform(image)
 
         return image,label
-    
-base_dir = "D:/Documents/AICore/facebook-marketplaces-recommendation-ranking-system"
-training_dir, img_dir = (os.path.join(base_dir,"training_data.csv"),os.path.join(base_dir,"cleaned_images"))
-dataset = FBMDataset(training_dir,img_dir)
-print(type(dataset[0][0]))
