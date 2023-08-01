@@ -1,3 +1,5 @@
 model_evaluation/
 runs
-__pycache__
+__pycache__/
+cleaned_images/
+final_model/
