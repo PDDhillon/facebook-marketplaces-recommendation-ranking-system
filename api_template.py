@@ -26,16 +26,16 @@ class FeatureExtractor(nn.Module):
 # Populate the __init__ method, so that it contains the same #
 # structure as the model you used to train the image model   #
 ##############################################################
-        self.main = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_resnet50', pretrained=True)
+        self.resnet50 = torch.hub.load('NVIDIA/DeepLearningExamples:torchhub', 'nvidia_resnet50', pretrained=True)
         # unfreeze the last two layers and retrain entire model   
         for param in self.resnet50.parameters():
             param.requires_grad = False
         # change final layer of resnet-50 to have an output size = number of possible categories (13 categories)
-        self.main.fc = torch.nn.Sequential(torch.nn.Linear(2048,1000))
+        self.resnet50.fc = torch.nn.Sequential(torch.nn.Linear(2048,1000))
         self.decoder = decoder
 
     def forward(self, image):
-        x = self.main(image)
+        x = self.resnet50(image)
         return x
 
     def predict(self, image):
@@ -57,13 +57,11 @@ try:
 # structure as the model that you used for training it. Load    #
 # the weights in it here.                                       #
 #################################################################
-    f = open("image_decoder.pkl") 
-    data = json.load(f)
-    feature_extractor = FeatureExtractor(decoder=data)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    feature_extractor.to(device)
-    state = torch.load("final_model/image_model.pt")
-    feature_extractor.load_state_dict(state)
+    with open("index.pkl", "rb") as f:
+        data = pickle.load(f)   
+        feature_extractor = FeatureExtractor(decoder=data)
+        state = torch.load("image_model.pt",map_location=torch.device('cpu'))
+        feature_extractor.load_state_dict(state[0])
 except:
     raise OSError("No Feature Extraction model found. Check that you have the decoder and the model in the correct location")
 

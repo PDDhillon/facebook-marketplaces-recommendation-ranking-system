@@ -1,0 +1,1 @@
+{0: 'Home & Garden', 1: 'Baby & Kids Stuff', 2: 'DIY Tools & Materials', 3: 'Music, Films, Books & Games', 4: 'Phones, Mobile Phones & Telecoms', 5: 'Clothes, Footwear & Accessories', 6: 'Other Goods', 7: 'Health & Beauty', 8: 'Sports, Leisure & Travel', 9: 'Appliances', 10: 'Computers & Software', 11: 'Office Furniture & Equipment', 12: 'Video Games & Consoles'}
