@@ -1,0 +1,10 @@
+Pillow == 9.1.1
+fastapi == 0.78.0
+pydantic == 1.9.1
+numpy == 1.22.4
+uvicorn == 0.17.6
+boto3 == 1.24.9
+faiss-cpu==1.7.2
+json-numpy==1.0.1
+transformers
+python-multipart
