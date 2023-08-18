@@ -35,12 +35,12 @@ The optimiser chosen to improve the model was Stochastic Gradient Descent (SGD).
 
 The loss function that was chosen was cross entropy. Cross entropy is commonly used for multiclass classifcation problems. The general idea is that the probability of a correct outcome should be pushed up, whereas the probability of an incorrect outcome should be pushed down. Cross entropy maximises the probability of a correct label, which by default pushed all other outcomes down.
 
-![alt text](https://github.com/PDDhillon/multinational-retail-data-centralisation/blob/main/readme_images/Tensorboard.jpg?raw=true)
+![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/Tensorboard.jpg?raw=true)
 
 This process was the foundation of the training loop to train the FBMClassifier. Although the weights of the model could be optimised, the hyperparamters of the model could not be. The two main hyperparameters being the learning rate of the optimiser and the batch size of the datasets. Ray Tune helped to solve this problem. By providing a range of options, Ray Tune was able to run multiple experiments on the training function and output the accuracy and loss of the model, ultimately providing you with a single set of hyperparameters that provided the best outcome. 
 
 
-![alt text](https://github.com/PDDhillon/multinational-retail-data-centralisation/blob/main/readme_images/tune_results.jpg?raw=true)
+![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/tune_results.jpg?raw=true)
 
 Once the model was trained to an acceptable degree, the architecture of the model was reverted to return 1000 neurons. This output, referred to as our image embedding, would provide us with a reference to index inside of FAISS.
 
@@ -53,6 +53,6 @@ Using the feature extraction model that was created previously, a dictionary was
 # Configure and deploy the model serving API
 Once all the components had been created, it was time to link them together to be consumed. Two endpoints were created using FastAPI and uvicorn. A GET endpoint to retrieve an image embedding from a single image and a POST to get the index of similar images from the one posted. These endpoint were containerised and stored inside of a docker image. 
 
-![alt text](https://github.com/PDDhillon/multinational-retail-data-centralisation/blob/main/readme_images/API.jpg?raw=true)
+![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/API.jpg?raw=true)
 
 Docker images were the perfect solution to deploy our application to our AWS EC2 instance. Ultimately, if this was a production application, we could scale the containers based on usage to provide load balancing. This would prevent users from getting a downturn in performance.
