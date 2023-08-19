@@ -10,6 +10,8 @@ import torch
 import torch.nn as nn
 import json
 from image_processor import ImageProcessor
+from fastapi.middleware.cors import CORSMiddleware
+
 class FeatureExtractor(nn.Module):
     def __init__(self,
                  decoder: dict = None):
@@ -50,6 +52,16 @@ except:
 
 app = FastAPI()
 print("Starting server")
+
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get('/healthcheck')
 def healthcheck():
