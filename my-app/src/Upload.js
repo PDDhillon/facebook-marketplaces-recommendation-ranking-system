@@ -13,6 +13,7 @@ import {
     Button,
     Input
   } from '@chakra-ui/react'
+  
 
 function Upload({url, title}) {
     const [file, setFile] = useState();
