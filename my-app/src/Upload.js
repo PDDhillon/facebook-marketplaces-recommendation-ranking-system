@@ -1,23 +1,26 @@
 import './App.css';
-import { Button, ButtonGroup } from '@chakra-ui/react'
-import { Input } from '@chakra-ui/react'
 import { useState } from 'react';
-import { Image } from '@chakra-ui/react'
-import { Card, CardHeader, CardBody, CardFooter } from '@chakra-ui/react'
-import { Center, Square, Circle } from '@chakra-ui/react'
 import {
-    List,
+    Box,
+    useColorModeValue,
     ListItem,
-    ListIcon,
-    OrderedList,
     UnorderedList,
+    useDisclosure,
+    Collapse,
+    Heading,
+    Stack,
+    Center,
+    Button,
+    Input
   } from '@chakra-ui/react'
 
 function Upload({url, title}) {
     const [file, setFile] = useState();
     const [data, setData] = useState([]);
+    const { isOpen, onOpen, onClose  } = useDisclosure()
 
-    function handleFile(e){
+    function handleFile(e){        
+        onClose()
         setFile(e.target.files[0])
         console.log(e.target.files[0])
     }
@@ -39,6 +42,7 @@ function Upload({url, title}) {
             (result) => {
                 console.log('success', result)                
                 setData(result.similar_index)
+                onOpen()
             }
         )
         .catch(error => {
@@ -47,34 +51,44 @@ function Upload({url, title}) {
     }
 
   return (
-    <div className="Upload">
-      <header className="Upload-header">
-        <h2>{title}</h2>
-        <form onSubmit={handleUpload}>
-            <Input type='file' onChange={handleFile}></Input>
-            <Button colorScheme='blue' type='submit'>Submit</Button>
-        </form>
-        {/* <Card>
-            <CardBody>
-                <Center>                    
-                    <Image borderRadius='lg' boxSize='250px' src={fileUrl}/>
-                </Center>
-            </CardBody>
-        </Card> */}
-        <Card>
-            <CardBody>
-                <Center>    
-                    <UnorderedList>     
-                    {
-                        data.map((d) => {return(<ListItem>{d}</ListItem>)}
-                        )
-                    }
-                    </UnorderedList>      
-                </Center>
-            </CardBody>
-        </Card>
-      </header>
-    </div>
+    <Center py={6}>
+      <Box
+        maxW={'320px'}
+        w={'full'}
+        bg={useColorModeValue('white', 'gray.900')}
+        boxShadow={'2xl'}
+        rounded={'lg'}
+        p={6}
+        textAlign={'center'}>
+        <Heading fontSize={'2xl'} fontFamily={'body'}>{title}</Heading>
+        <Stack mt={5} direction='row'>
+            <form onSubmit={handleUpload}>
+                <Input type='file' onChange={handleFile}></Input>
+                <Button mt={3} colorScheme='blue' type='submit'>Submit</Button>
+            </form>
+        </Stack>
+        <Collapse in={isOpen} animateOpacity>
+            <Box
+            p='40px'
+            color='white'
+            mt='4'
+            bg='teal.500'
+            rounded='md'
+            shadow='md'
+            >
+             <Center>    
+            <UnorderedList>     
+            {
+                data.map((d) => {return(<ListItem>{d}</ListItem>)}
+                )
+            }
+            </UnorderedList>      
+        </Center>
+            </Box>
+        </Collapse>
+       
+    </Box>
+    </Center>
   );
 }
 

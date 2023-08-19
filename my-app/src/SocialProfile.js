@@ -8,11 +8,10 @@ import {
   Text,
   Stack,
   Button,
-  Link,
-  Badge,
   useColorModeValue,
 } from '@chakra-ui/react'
 
+import { FaLinkedin,FaGithub } from "react-icons/fa";
 export default function SocialProfile() {
   return (
     <Center py={6}>
@@ -27,7 +26,7 @@ export default function SocialProfile() {
         <Avatar
           size={'xl'}
           src={
-            'https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
+            'https://media.licdn.com/dms/image/C4E03AQG_ySMdOu7t3w/profile-displayphoto-shrink_800_800/0/1653494783852?e=1697673600&v=beta&t=js-o9qI3qC4hgE7mV3Q5uiz211QyetAiF4RpR_WuVV4'
           }
           mb={4}
           pos={'relative'}
@@ -47,67 +46,23 @@ export default function SocialProfile() {
           Pavundeep Dhillon
         </Heading>
         <Text fontWeight={600} color={'gray.500'} mb={4}>
-          @lindsey_jam3s
+          @pddhillon
         </Text>
         <Text
           textAlign={'center'}
           color={useColorModeValue('gray.700', 'gray.400')}
           px={3}>
-          Actress, musician, songwriter and artist. PM for work inquires or{' '}
-          <Text color={'blue.400'}>#tag</Text> me in your posts
+          4+ years as a Full Stack .NET Core developer
         </Text>
-
-        <Stack align={'center'} justify={'center'} direction={'row'} mt={6}>
-          <Badge
-            px={2}
-            py={1}
-            bg={useColorModeValue('gray.50', 'gray.800')}
-            fontWeight={'400'}>
-            #art
-          </Badge>
-          <Badge
-            px={2}
-            py={1}
-            bg={useColorModeValue('gray.50', 'gray.800')}
-            fontWeight={'400'}>
-            #photography
-          </Badge>
-          <Badge
-            px={2}
-            py={1}
-            bg={useColorModeValue('gray.50', 'gray.800')}
-            fontWeight={'400'}>
-            #music
-          </Badge>
-        </Stack>
-
-        <Stack mt={8} direction={'row'} spacing={4}>
-          <Button
-            flex={1}
-            fontSize={'sm'}
-            rounded={'full'}
-            _focus={{
-              bg: 'gray.200',
-            }}>
-            Message
-          </Button>
-          <Button
-            flex={1}
-            fontSize={'sm'}
-            rounded={'full'}
-            bg={'blue.400'}
-            color={'white'}
-            boxShadow={
-              '0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'
-            }
-            _hover={{
-              bg: 'blue.500',
-            }}
-            _focus={{
-              bg: 'blue.500',
-            }}>
-            Follow
-          </Button>
+        <Stack mt={4} direction={'row'} spacing={2}>
+        <Button 
+            flex={1} rounded={'full'} colorScheme='linkedin' leftIcon={<FaLinkedin />}>
+          <a href="https://www.linkedin.com/in/pavundeep-dhillon-86a505138/">Linkedin</a>
+        </Button>
+        <Button 
+            flex={1} rounded={'full'} colorScheme='gray' leftIcon={<FaGithub />}>
+          <a href="https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system">Github</a>
+        </Button>
         </Stack>
       </Box>
     </Center>
