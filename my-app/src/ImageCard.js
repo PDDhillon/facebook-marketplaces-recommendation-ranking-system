@@ -5,16 +5,14 @@ import './App.css';import {
     Text,
     Divider,
     Heading,
-    Stack,
+    Stack, useColorModeValue
   } from '@chakra-ui/react'
 
-
-
-  
 function ImageCard({title,image, distance, category}) {
   return (
     <div className="ImageCard">
-        <Card size="sm">
+        <Card size="sm" 
+        bg={useColorModeValue('#EBF8FF', 'gray-700')}>
             <CardBody>
                 <Image
                 src={image}

@@ -2,28 +2,32 @@ import './App.css';
 import Upload from './Upload';
 import SocialProfile from './SocialProfile';
 import {
-  Stack,
+  Stack, Box, useColorMode, Button
 } from '@chakra-ui/react'
 
-const breakpoints = {
-  base: "0em", // 0px
-  sm: "30em", // ~480px. em is a relative unit and is dependant on the font size.
-  md: "48em", // ~768px
-  lg: "62em", // ~992px
-  xl: "80em", // ~1280px
-  "2xl": "96em", // ~1536px
-};
-
-  
 function App() {
+  
+  const { toggleColorMode } = useColorMode()
   return (
     <div className="App">
-      <header className="App-header">  
-        <Stack spacing={8} direction='row' m={5} width={breakpoints} wrap={"wrap"}>
-            <SocialProfile></SocialProfile>
-            <Upload url='https://54.170.80.153:8080/predict/similar_images' title="Similarity Search"></Upload>
-        </Stack> 
-      </header>
+      <Box
+        margin={{ base: "1rem", md: "3rem auto" }}
+        maxWidth={{ base: "100%", md: "32rem" }}
+      >
+        <Button size='sm' onClick={toggleColorMode}>
+        Toggle Mode
+      </Button>
+        <Stack
+          marginTop="1rem"
+          direction={{ base: "column", md: "row" }}
+          gap="1rem"
+          alignItems="stretch"
+          justifyContent={"center"}
+        >
+          <SocialProfile></SocialProfile>
+          <Upload url='http://54.170.80.153:8080/predict/similar_images' title="Similarity Search"></Upload>
+        </Stack>
+      </Box>
     </div>
   );
 }

@@ -13,12 +13,16 @@ import {
     Input,
     Image,
     Card,
-    CardBody
+    CardBody,
+    Stack,
+    Text
   } from '@chakra-ui/react'
   
 import { Amplify, Storage } from 'aws-amplify';
 
 function Upload({url, title}) {
+    const bg = useColorModeValue('blue.500', 'red.200')
+    const color = useColorModeValue('white', 'gray.800')
     const [file, setFile] = useState();
     const [preview, setPreview] = useState();
     const [data, setData] = useState([]);
@@ -79,25 +83,32 @@ function Upload({url, title}) {
 
   return (
     <Center py={6}>
+        
       <Box
         maxW={'1100px'}
         w={'1100px'}
-        bg={useColorModeValue('white', 'gray.900')}
+        bg={useColorModeValue('#EBF8FF', 'gray.900')}
         boxShadow={'2xl'}
         rounded={'lg'}
         p={6}
         textAlign={'center'}>
-        <Heading fontSize={'3xl'} >{title}</Heading>
-        <SimpleGrid spacing={4} columns={2}>
-            <Card align={"center"} justify={"center"}>
+            <Heading
+        fontSize={{ base: "2rem", md: "3rem" }}
+        marginBottom={{ base: "0.5rem", md: "1rem" }}
+      >
+        {title}
+      </Heading>
+        <SimpleGrid spacing={4} columns={2} minChildWidth='250px'>
+            <Card  align={"center"} direction={"row"}  variant={"outline"} >
                 <CardBody >
+                    <Text>Choose a file</Text>
                     <form onSubmit={handleUpload}>
                         <Input type='file' onChange={handleFile}></Input>
                         <Button mt={3} colorScheme='blue' type='submit'>Submit</Button>
                     </form>                    
                 </CardBody>
             </Card>
-            <Card>
+            <Card  variant={"outline"}>
                 <CardBody align={"center"}>                    
                     <Heading fontSize={'2xl'} fontFamily={'body'}>Your Selection</Heading>
                     <Image align={"center"} src={preview} height={300}></Image>                    
@@ -108,13 +119,19 @@ function Upload({url, title}) {
             <Box
             p='40px'
             color='white'
-            mt='4'
-            bg='#72DDF7'
+            mt='4'            
+            bg={useColorModeValue('white', 'gray.900')}
             rounded='md'
             shadow='md'
             >
              <Center>    
-             <SimpleGrid columns={5} spacing={5}>    
+             <Stack
+          marginTop="1rem"
+          direction={{ base: "column", md: "row" }}
+          gap="1rem"
+          alignItems="stretch"
+          justifyContent={"center"}
+        >   
             {
                 data.map((d) => {return(<ImageCard 
                     title = {d.id}
@@ -123,7 +140,7 @@ function Upload({url, title}) {
                     image={d.image}></ImageCard >)}
                 )
             }
-            </SimpleGrid>      
+            </Stack>      
         </Center>
             </Box>
         </Collapse>
