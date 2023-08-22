@@ -21,7 +21,7 @@ function App() {
       <header className="App-header">  
         <Stack spacing={8} direction='row' m={5} width={breakpoints} wrap={"wrap"}>
             <SocialProfile></SocialProfile>
-            <Upload url='http://54.170.80.153:8080/predict/similar_images' title="Similarity Search"></Upload>
+            <Upload url='https://54.170.80.153:8080/predict/similar_images' title="Similarity Search"></Upload>
         </Stack> 
       </header>
     </div>
