@@ -8,3 +8,4 @@ faiss-cpu==1.7.2
 json-numpy==1.0.1
 transformers
 python-multipart
+pandas
