@@ -13,7 +13,23 @@ from ray.air import session,Checkpoint
 from torch.utils.tensorboard import SummaryWriter
 
 class FBMTrainer:   
+    '''A class to perform the training of the model for the facebook marketplace classification problem.
 
+    Methods
+    ----------
+    get_datasets()
+            Function to retrieve, shuffle and split the datasets.
+    create_model_dir_path()
+            Function to create directory path to store model information per run.
+    training_loop()
+            Representation of a training run for a single epoch of the resnet50 model.
+    validate()
+            Representation of validation for a single epoch of the resnet50 model.
+    test()
+            Perform testing after all epochs have been run on a single solution.
+    train_fbm()
+            Main function to perform full run of the training and validation of the model over multiple epochs. Also used for hyperparameter tuning.
+    '''
     def get_datasets(self, training_data_dir, cleaned_images_dir):    
         transform_list = transforms.Compose([
                 transforms.Resize(256),
@@ -25,7 +41,7 @@ class FBMTrainer:
         with FileLock(os.path.expanduser("~/.data.lock")):
             dataset = FBMDataset(training_data_dir,cleaned_images_dir,transform=transform_list)
             #obtain the list of targets
-            train_dataset,test_dataset,val_dataset = random_split(dataset, [0.7,0.15,0.15])
+            train_dataset,test_dataset,val_dataset = random_split(dataset, [0.7,0.2,0.1])
         return (train_dataset, test_dataset, val_dataset)
     
     def create_model_dir_path(self):
@@ -58,9 +74,7 @@ class FBMTrainer:
             criterion.backward()
             # moves each parameter in the opposite direction of the gradient, proportional to the learning rate
             optimiser.step()
-
             writer.add_scalar('Loss', criterion.item(), batch_id)
-
             batch_id += 1
             print(f"completed: {batch_id}")
         print("Completed")
@@ -88,6 +102,20 @@ class FBMTrainer:
                 val_steps += 1
         return (val_loss / val_steps),(correct / total)
     
+    def test(self, model, test_loader, device):
+        correct = 0
+        total = 0
+        with torch.no_grad():
+            for data in test_loader:
+                features, labels = data
+                features, labels = features.to(device), labels.to(device)
+                outputs = model(features)
+                _, predicted = torch.max(outputs.data, 1)
+                total += labels.size(0)
+                correct += (predicted == labels).sum().item()
+
+        return correct / total
+    
     def train_fbm(self, config):    
         hyperparameter_tuning_on=config["hyperparameter_tuning_on"]
         is_feature_extraction_model=config["is_feature_extraction_model"]
@@ -108,7 +136,7 @@ class FBMTrainer:
         path = self.create_model_dir_path()
         os.makedirs(path)
         
-        for epoch in range(15):
+        for epoch in range(1):
             print(f"Beginning {epoch} ...")
             self.training_loop(model,optimiser,train_loader, epoch, device=device)
             print('Training complete ...')
@@ -129,11 +157,15 @@ class FBMTrainer:
                 torch.save(model.state_dict(), path + f'/epoch_{epoch}.pt')
             print(f"Ending {epoch} ...")    
 
+            test_accuracy = self.test(model,test_loader, device)
+            print(f"Testing Accuracy: {test_accuracy}")
+            return test_accuracy
+        
 if __name__ == '__main__':
     trainer = FBMTrainer()
     config = {        
-            "lr": tune.loguniform(1e-3,1e-2),
-            "batch_size": tune.choice([64]),
+            "lr": tune.loguniform(1e-2,1e-1),
+            "batch_size": tune.choice([8]),
             "hyperparameter_tuning_on": True,
             "is_feature_extraction_model": False
         }

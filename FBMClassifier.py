@@ -1,5 +1,17 @@
 import torch
 class FBMClassifier(torch.nn.Module):
+    '''A class to represent a classifier model for the facebook marketplace classification problem.
+    
+    Attributes
+    ----------
+    resnet50 : Model
+            Transfer learned resnet50 model downloaded from torch hub.
+            
+    Methods
+    ----------
+    forward()
+            Override of the forward pass through the resnet50 model.
+    '''
     def __init__(self, is_feature_extraction):
         super().__init__()
         # load pre trained resnet50 from torch hub

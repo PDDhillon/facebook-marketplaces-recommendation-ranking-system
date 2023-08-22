@@ -4,6 +4,12 @@ class ImageProcessor:
         pass
 
     def process(self, image):
+        """Applies reccomended resnet50 transformations on a given image.
+    
+        Parameters:
+        image (PIL): An image to transform
+        
+        """
         #apply tramsformations        
         transform_list = transforms.Compose([
             transforms.Resize(256),
