@@ -4,6 +4,9 @@ Facebook Marketplace is a market-leading platform for buying and selling product
 
 This project aims to recreate the ranking system to perform the same functionality. A multiclass classification model is trained and used as a feature extraction model, which is fed into the FAISS index to perform a similarity search. The FAISS index is accessed through API endpoints to provide similar images for a given single input. The API is then consumed by a React App which provides a graphical representation of the results.
 
+
+Created by [Pavundeep Dhillon](https://www.linkedin.com/in/pavundeep-dhillon-86a505138/).
+
 ## 1. Usage
 To use the final solution, you can access the API directly [here](http://54.170.80.153:8080/docs).
 
