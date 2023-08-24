@@ -4,23 +4,7 @@ Facebook Marketplace is a market leading platform for buying and selling product
 
 This project aims to recreate the ranking system in order to perform the same functionality. A multiclass classification model is trained and used as a feature extraction model, which is fed into Facebook AI Similarity Search (FAISS) index to perform a similarity search. The FAISS index is accessed through API endpoints to provide similar images for a given single input. The API is then consumed by a React App in order to provide a graphical represenation of the results.
 
-## Table of Contents
--[Usage](#usage)
-
--[File Structure](#file-structure)
-
--[Explore the Dataset](#explore-the-dataset)
-
--[Create the vision model, then turn it into a feature extraction model](#create-the-vision-model-then-turn-it-into-a-feature-extraction-model)
-
--[Create the search index using FAISS](#create-the-search-index-using-faiss)
-
--[Configure and deploy the model serving API](#configure-and-deploy-the-model-serving-api)
-
--[Consume the API and provide a user interface](#consume-the-api-and-provide-a-user-interface)
-
-
-## Usage
+## 1. Usage
 To use the final solution, you can access the API directly [here](http://54.170.80.153:8080/docs).
 
 ![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/API.jpg?raw=true)
@@ -29,7 +13,7 @@ Or you can view the deployed react app [here](https://main.d18kreqtn2vh50.amplif
 
 ![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/darkmode.png?raw=true)
 
-## File Structure
+## 2. File Structure
 
 ```
 ├── clean_images.py
@@ -89,8 +73,8 @@ Or you can view the deployed react app [here](https://main.d18kreqtn2vh50.amplif
 │       ├── theme.js
 │       └── Upload.js  
 ```
-
-## Explore the dataset
+## 3. Process
+### 3.1 Explore the dataset
 
 The success of a machine learning model directly correlates to the quality of the data that is provided. For the first step of the journey, exploratory data analysis and minimal data cleaning were performed. In order to perform this processing, a Jupyter notebook ```sandbox.ipynb``` was utilised. 
 
@@ -104,7 +88,7 @@ The category column stored multiple categories in a string, all seperated by a `
 
 Finally, the images provided were passed through the function ```clean_image_data``` inside of ```clean_images.py```. Here images were resized and forced to an RGB format and saved into a ```cleaned_images``` directory. This formatting was done in order to have consistent data for our model to use.
 
-## Create the vision model, then turn it into a feature extraction model
+### 3.2 Create the vision model, then turn it into a feature extraction model
 
 Using the concept of a Convulutional Neural Network, a model was trained to classify the category of each product from their images and use it as a feature extraction model for indexing.
 
@@ -131,13 +115,15 @@ Although the weights of the model could be optimised, there are parameters that 
 
 Once the model was trained to an acceptable degree, the architecture of the model was reverted to return 1000 outputs (feature extraction model). This output, referred to as our image embedding, would provide us with a reference to index inside of FAISS.
 
-## Create the search index using FAISS
+### 3.3 Create the search index using FAISS
 
 Facebook AI Similarity Search (FAISS) is a bespoke solution from Facebook to solve the issue of searching for multimedia documents that are similar to one another. It uses nearest-neighbour search implementations that can be utilised by billion scale data sets. For this reason, its a perfect solution to our problem.
 
+![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/faiss.jpg?raw=true)
+
 Using the feature extraction model that was created previously, a dictionary was created to represent all of the images in our dataset. The key was the images filename and the value was the image embedding produced by the feature extraction model. This was added to a FAISS index and saved to a pkl file ```index.pkl```. This meant that the index could be recreated again with the exact same values.
 
-## Configure and deploy the model serving API
+### 3.4 Configure and deploy the model serving API
 Once all the components had been created, it was time to link them together to be consumed. Two endpoints were created using FastAPI and uvicorn. A GET endpoint to retrieve an image embedding from a single image and a POST to get the index of similar images from the one posted. These endpoint were containerised and stored inside of a docker image. 
 
 Docker images were the perfect solution to deploy our application to our AWS EC2 instance. Ultimately, if this was a production application, we could scale the containers based on usage to provide load balancing. This would prevent users from getting a downturn in performance.
@@ -146,7 +132,7 @@ Docker images were the perfect solution to deploy our application to our AWS EC2
 
 The JSON response provided from my API provides the user with the following four properties: Euclidian Distance (a measure of distance from the origial provided input), the index of the approximate nearest neighbour, the filename associated for that result and the category that the result falls under. This provided enough information to be consumed and displayed inside of a user interface.
 
-## Consume the API and provide a user interface
+### 3.5 Consume the API and provide a user interface
 The final component of the project was to provide a sufficient user interface in order to interact with our model. This interface would allow a user to provide an image, pass that image to our API and run it through our model, then provide the user with a graphical representation of images in our FAISS Index (along with suplimentary information).
 
 ![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/laptop_result.png?raw=true)
@@ -160,7 +146,8 @@ The choice of frontend framework was React, due to its popularity and support. I
 
 The process was to first ask for a user to upload an image. This would be the input for our API in order to find images similar to. The API responds with a JSON structure that provides more information on the related image and how it is stored inside of FAISS. Based on the result, the file name was used to query an S3 bucket which hosted all the images stored in our FAISS model. Once returned, the images were displayed alongside the rest of the information returned from the first API call.
 
-## Improvements and lessons learned
+
+## 4. Improvements and lessons learned
 Of course with a project of this magnitude, there was never going to be a complete replica of facebook's system. However, I do believe there are a lot of areas where I could have improved on. The best accuracy I was able to achieve after multiple rounds of experiments was 60%. The usage of Resnet50 greatly reduced the amount of time it would have taken to finetune a models structure, however, given the time I definitely would have implemented my own Convulutional Neural Network. This would mean that I would be able to train all layers of the CNN to improve on accuracy. Although 12k images is a sizeable dataset, I would have loved to have had access to even more data to train my model to improve its accuracy.
 
 I believe the usage of RayTune was really beneficial to my experiment stage of this project. It allowed me to perform a multitude of experiments in order to test a variety of batch sizes and learning rates. With more time, I could experiment with different optimisers in order to improve accuracy. I was also constrained with the limitations of my hardware. Despite having access to CUDA, if I was to do this again, I would host my application in the cloud and utilise the larger amount of resoures and processing power. CUDA helped me to improve my epoch times from 22 minutes down to 2. With the help of the cloud, i'm certain this could improve even more.
