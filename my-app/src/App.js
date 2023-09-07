@@ -25,7 +25,7 @@ function App() {
           justifyContent={"center"}
         >
           <SocialProfile></SocialProfile>
-          <Upload url='http://54.170.80.153:8080/predict/similar_images' title="Similarity Search"></Upload>
+          <Upload url='https://16.16.27.46/predict/similar_images' title="Similarity Search"></Upload>
         </Stack>
       </Box>
     </div>
