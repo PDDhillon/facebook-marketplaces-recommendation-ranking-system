@@ -8,11 +8,9 @@ This project aims to recreate the ranking system to perform the same functionali
 Created by [Pavundeep Dhillon](https://www.linkedin.com/in/pavundeep-dhillon-86a505138/).
 
 ## 1. Usage
-To use the final solution, you can access the API directly [here](https://16.170.8.5/docs). (Currently using self signed SSL, so may be presented with message about safety)
+To use the final solution, clone the reppository and run the ```my-app``` folder for the React application and the ```app``` folder for the API.
 
 ![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/API.jpg?raw=true)
-
-Or you can view the deployed react app [here](https://main.d18kreqtn2vh50.amplifyapp.com/). (Currently fixing mixed content issue. If it doesn't work immediately, you will need to access link above and trust the self signed SSL.)
 
 ![alt text](https://github.com/PDDhillon/facebook-marketplaces-recommendation-ranking-system/blob/main/readme_images/darkmode.png?raw=true)
 
